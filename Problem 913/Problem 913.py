@@ -45,13 +45,12 @@ class Solution:
         q = deque()
 
         # initialization
-        for i in range(len(graph)):
+        for i in range(1, len(graph)):
             for t in range(1, 3):
-                if i not in {0}:
-                    dp[0][i][t] = self.Mouse
-                    dp[i][i][t] = self.Cat
-                    q.append((0, i, t))
-                    q.append((i, i, t))
+                dp[0][i][t] = self.Mouse
+                dp[i][i][t] = self.Cat
+                q.append((0, i, t))
+                q.append((i, i, t))
 
         while q:
             front = q.popleft()
@@ -63,12 +62,12 @@ class Solution:
                     continue
                 # for cat, once cat can move to a state that the mouse dies, then leading to a mouse's death
                 # for mouse, once mouse can move to a state that the cat dies, then leading to a cat's death
-                if dp[mousePov][catPov][turn] == 3 - turn:
+                if dp[mousePov][catPov][turn] == preTurn:
                     dp[preMouse][preCat][preTurn] = preTurn
                     q.append((preMouse, preCat, preTurn))
                 # the leading result of the node with definite result
                 elif self.findChildern(status, graph, dp) is True:
-                    dp[preCat][preMouse][preTurn] = 3 - preTurn
+                    dp[preMouse][preCat][preTurn] = 3 - preTurn
                     q.append(status)
             # the remaining unknown state node is for the result
         return dp[1][2][1]
@@ -76,5 +75,6 @@ class Solution:
 
 if __name__ == '__main__':
     s = Solution()
-    graph = [[2, 5], [3], [0, 4, 5], [1, 4, 5], [2, 3], [0, 2, 3]]
+    # bug here for dfs :
+    graph = [[2, 3], [3, 4], [0, 4], [0, 1], [1, 2]]
     print(s.catMouseGame(graph))
