@@ -1,5 +1,5 @@
-pattern = "a*"
-string = "aa"
+pattern = 'a*'
+string = ''
 
 
 def isMatch(context, pattern):
